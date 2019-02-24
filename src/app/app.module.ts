@@ -8,10 +8,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { CatTeaserComponent } from './cat-teaser/cat-teaser.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CatTeaserComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +29,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
       return {
         cache: new InMemoryCache(),
         link: httpLink.create({
-          uri: 'localhost:8000/api'
+          uri: 'http://localhost:8000/api'
         })
       };
     },
@@ -36,4 +38,3 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-
