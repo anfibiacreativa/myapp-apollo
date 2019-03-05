@@ -25,6 +25,8 @@ export class CatTeaserComponent implements OnInit, OnDestroy, AfterViewInit {
     threshold: 0.03
   };
   observer: any;
+  urlPrefix: String = '../../assets/kitten/';
+  urlSuffix: String = '.png';
   private querySubscription: Subscription;
 
   constructor(
@@ -37,7 +39,6 @@ export class CatTeaserComponent implements OnInit, OnDestroy, AfterViewInit {
         entries.forEach(entry => {
 
           if (entry.isIntersecting) {
-            console.log(entry.target);
             this.observer.unobserve(entry.target);
             this.preloadCats(entry.target);
           }
