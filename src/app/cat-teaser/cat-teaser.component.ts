@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { Subscription } from 'rxjs';
 import gql from 'graphql-tag';
@@ -16,24 +16,63 @@ const AllKitten = gql`
   templateUrl: './cat-teaser.component.html',
   styleUrls: ['./cat-teaser.component.scss']
 })
-export class CatTeaserComponent implements OnInit, OnDestroy {
+export class CatTeaserComponent implements OnInit, OnDestroy, AfterViewInit {
   loading: boolean;
   kittens: any[];
-
+  intersectionObserverConfig: any = {
+    // Root margin determines distance from viewport in the Y axis
+    rootMargin: '20px 0px',
+    threshold: 0.01
+  };
+  observer: any;
+  config = {
+    rootMargin: '0px 0px 50px 0px',
+    threshold: 0
+  };
+  src: String = '';
   private querySubscription: Subscription;
 
-  constructor(private apollo: Apollo) {}
+  constructor(
+    private apollo: Apollo
+  ) {}
+
+  lazyLoadCats(catImage: HTMLElement) {
+    this.observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+
+          if (entry.isIntersecting) {
+            this.preloadCats(catImage);
+          }
+        });
+      }, this.config);
+  }
+
+  preloadCats(image: HTMLElement) {
+    console.log(image + 'yay');
+  }
 
   ngOnInit() {
-    console.log(this.apollo + 'whatever');
     this.querySubscription = this.apollo.watchQuery<any>({
       query: AllKitten
     })
-      .valueChanges
-      .subscribe(({ data, loading }) => {
-        this.loading = loading;
-        this.kittens = data.kittens;
+    .valueChanges
+    .subscribe(({ data, loading }) => {
+      this.loading = loading;
+      this.kittens = data.kittens;
+      console.log(data.kittens.id);
+    });
+  }
+
+  ngAfterViewInit() {
+    const self: any = this;
+    setTimeout(function() {
+      const images: NodeListOf<HTMLElement> = document.querySelectorAll('.catIsLazy');
+      images.forEach(image => {
+        self.observer.observe(image);
+        self.lazyLoadCats(image);
       });
+    }, 300);
   }
 
   ngOnDestroy() {

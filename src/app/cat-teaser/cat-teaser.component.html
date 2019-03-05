@@ -1,9 +1,12 @@
-<section class="catTeaser__base">
-  <ul class="catTeaser__list">
-    <li *ngFor="let kitten of kittens" class="catTeaser__listItem">
-      <h2 class="catTeaser__hl">{{kitten.name}}</h2>
+<section class="content__base">
+  <ul class="teasergallery__base columncontrol__grid--lt2">
+    <li *ngFor="let kitten of kittens" class="teaser__base teaser__base--one" [attr.data-cat]="">
+        <figure class="teaser__figure">
+            <img class="teaser__image catIsLazy" data-src="../../assets/kitten/{{kitten.name}}.png" alt="{{kitten.name}} pic" />
+        </figure>
+        <h3 class="teaser__hl">{{kitten.name}}</h3>
+        <p class="teaser__summary">Lorem ipsum dolor sit amet bla bla bla</p>
+        <a class="teaser__link" href="#">Know {{kitten.name}}</a>
     </li>
   </ul>
 </section>
- 
-
