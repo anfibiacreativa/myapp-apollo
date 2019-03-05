@@ -19,16 +19,12 @@ const AllKitten = gql`
 export class CatTeaserComponent implements OnInit, OnDestroy, AfterViewInit {
   loading: boolean;
   kittens: any[];
-  intersectionObserverConfig: any = {
+  config: any = {
     // Root margin determines distance from viewport in the Y axis
     rootMargin: '20px 0px',
-    threshold: 0.01
+    threshold: 0.03
   };
   observer: any;
-  config = {
-    rootMargin: '0px 0px 50px 0px',
-    threshold: 0
-  };
   private querySubscription: Subscription;
 
   constructor(
@@ -41,6 +37,7 @@ export class CatTeaserComponent implements OnInit, OnDestroy, AfterViewInit {
         entries.forEach(entry => {
 
           if (entry.isIntersecting) {
+            console.log(entry.target);
             this.observer.unobserve(entry.target);
             this.preloadCats(entry.target);
           }
