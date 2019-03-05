@@ -29,27 +29,27 @@ export class CatTeaserComponent implements OnInit, OnDestroy, AfterViewInit {
     rootMargin: '0px 0px 50px 0px',
     threshold: 0
   };
-  src: String = '';
   private querySubscription: Subscription;
 
   constructor(
     private apollo: Apollo
   ) {}
 
-  lazyLoadCats(catImage: HTMLElement) {
+  lazyLoadCats() {
     this.observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
 
           if (entry.isIntersecting) {
-            this.preloadCats(catImage);
+            this.observer.unobserve(entry.target);
+            this.preloadCats(entry.target);
           }
         });
       }, this.config);
   }
 
-  preloadCats(image: HTMLElement) {
-    console.log(image + 'yay');
+  preloadCats(entry) {
+    console.log(entry + 'yay');
   }
 
   ngOnInit() {
@@ -60,7 +60,6 @@ export class CatTeaserComponent implements OnInit, OnDestroy, AfterViewInit {
     .subscribe(({ data, loading }) => {
       this.loading = loading;
       this.kittens = data.kittens;
-      console.log(data.kittens.id);
     });
   }
 
@@ -70,9 +69,9 @@ export class CatTeaserComponent implements OnInit, OnDestroy, AfterViewInit {
       const images: NodeListOf<HTMLElement> = document.querySelectorAll('.catIsLazy');
       images.forEach(image => {
         self.observer.observe(image);
-        self.lazyLoadCats(image);
       });
     }, 300);
+    this.lazyLoadCats();
   }
 
   ngOnDestroy() {
