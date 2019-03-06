@@ -47,7 +47,6 @@ export class CatTeaserComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   preloadCats(entry) {
-    console.log(entry + 'yay');
     const srcValue = entry.getAttribute('data-attr');
     console.log(srcValue);
     const image = entry.firstChild as HTMLImageElement;
