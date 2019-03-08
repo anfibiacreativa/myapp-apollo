@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChildren, ElementRef, QueryList, Renderer2 } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { Subscription } from 'rxjs';
 import gql from 'graphql-tag';
@@ -17,6 +17,7 @@ const AllKitten = gql`
   styleUrls: ['./cat-teaser.component.scss']
 })
 export class CatTeaserComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChildren('lazyKitten') cats: QueryList<ElementRef<HTMLUListElement>>;
   loading: boolean;
   kittens: any[];
   config: any = {
@@ -28,12 +29,12 @@ export class CatTeaserComponent implements OnInit, OnDestroy, AfterViewInit {
   urlPrefix: String = '../../assets/kitten/';
   urlSuffix: String = '.png';
   private querySubscription: Subscription;
-
   constructor(
-    private apollo: Apollo
+    private apollo: Apollo,
+    private renderer: Renderer2
   ) {}
 
-  lazyLoadCats() {
+  lazyLoadCats(): void {
     this.observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
@@ -46,14 +47,22 @@ export class CatTeaserComponent implements OnInit, OnDestroy, AfterViewInit {
       }, this.config);
   }
 
-  preloadCats(entry) {
+  preloadCats(entry): void {
     const srcValue = entry.getAttribute('data-attr');
     console.log(srcValue);
     const image = entry.firstChild as HTMLImageElement;
     image.src = srcValue;
   }
 
-  ngOnInit() {
+  watchCats(): void {
+    const kitten = this.cats.toArray();
+    console.log('Processing children. Their count:', kitten.length);
+    kitten.forEach(kitty => {
+      this.observer.observe(kitty.nativeElement);
+    });
+  }
+
+  ngOnInit(): void {
     this.querySubscription = this.apollo.watchQuery<any>({
       query: AllKitten
     })
@@ -64,14 +73,11 @@ export class CatTeaserComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
-    const self: any = this;
-    setTimeout(function() {
-      const images: NodeListOf<HTMLElement> = document.querySelectorAll('.catIsLazy');
-      images.forEach(image => {
-        self.observer.observe(image);
-      });
-    }, 300);
+  ngAfterViewInit(): void {
+    this.watchCats();
+    this.cats.changes.subscribe(_ =>
+      this.watchCats()
+    );
     this.lazyLoadCats();
   }
 
