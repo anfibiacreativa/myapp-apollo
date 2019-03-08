@@ -57,7 +57,7 @@ export class CatTeaserComponent implements OnInit, OnDestroy, AfterViewInit {
 
   watchCats(): void {
     const kitten = this.cats.toArray();
-    console.log('Processing children. Their count:', kitten.length);
+    console.log('Cats in this show:', kitten.length);
     kitten.forEach(kitty => {
       this.observer.observe(kitty.nativeElement);
     });
