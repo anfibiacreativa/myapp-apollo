@@ -29,6 +29,7 @@ export class CatTeaserComponent implements OnInit, OnDestroy, AfterViewInit {
   urlPrefix: String = '../../assets/kitten/';
   urlSuffix: String = '.png';
   private querySubscription: Subscription;
+  private catsSubscription: Subscription;
   constructor(
     private apollo: Apollo,
     private renderer: Renderer2
@@ -75,7 +76,7 @@ export class CatTeaserComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.watchCats();
-    this.cats.changes.subscribe(_ =>
+    this.catsSubscription = this.cats.changes.subscribe(_ =>
       this.watchCats()
     );
     this.lazyLoadCats();
@@ -83,5 +84,6 @@ export class CatTeaserComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy() {
     this.querySubscription.unsubscribe();
+    this.catsSubscription.unsubscribe();
   }
 }
