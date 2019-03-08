@@ -1,10 +1,10 @@
 # MyappApollo
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.3.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.3. It is to be used along with https://github.com/anfibiacreativa/myapp-server to load the kitten and launch them to space! 
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `ng serve --port 8001` for a dev server. You have to launch it in port 8001 otherwise your connection to the database will fail due to CORS. Navigate to `http://localhost:8001/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
@@ -25,3 +25,8 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Credits
+
+All the cats in the source folder are from https://unsplash.com/search/photos/kitten by different authors. Thank you to all of them for the photography contributes to knowledge sharing in other contexts, like Angular development.
+
