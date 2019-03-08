@@ -11,9 +11,21 @@
     max-width: 960px;
     margin: 0 auto;
    
-    &.columncontrol__grid--lt2 {
-      @media(min-width: 420px) {
-        @include generate-grid-layout(lt4)
+    &.columncontrol__grid {
+      &--lt2 {
+        @media(min-width: 420px) {
+          @include generate-grid-layout(lt4)
+        }
+      }
+      &--lt5 {
+        @media(min-width: 420px) {
+          @include generate-grid-layout(lt5)
+        }
+      }
+      &--lt7 {
+        @media(min-width: 420px) {
+          @include generate-grid-layout(lt7)
+        }
       }
     }
   }
