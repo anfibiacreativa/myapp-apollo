@@ -2,6 +2,9 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.3. It is to be used along with https://github.com/anfibiacreativa/myapp-server to load the kitten and launch them to space! 
 
+You can see the video of the talk in relation to this repo, here! 
+https://www.youtube.com/watch?v=TbF0ImYVjnw
+
 ## Development server
 
 Run `ng serve --port 8001` for a dev server. You have to launch it in port 8001 otherwise your connection to the database will fail due to CORS. Navigate to `http://localhost:8001/`. The app will automatically reload if you change any of the source files.
